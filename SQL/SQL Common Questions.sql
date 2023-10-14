@@ -57,3 +57,28 @@ Also :- select class from Courses group by class having count(student)>4;
 #5. Find the maximum number in table who occurs one time
 select MAX(num) as num from (select num from MyNumbers group by num having count(num)=1) AS Subquery;
 
+#6.  Managers with at Least 5 Direct Reports
+    Input: 
+    Employee table:
++-----+-------+------------+-----------+
+| id  | name  | department | managerId |
++-----+-------+------------+-----------+
+| 101 | John  | A          | None      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
++-----+-------+------------+-----------+
+Output: 
++------+
+| name |
++------+
+| John |
++------+
+:--Subquery is faster than join
+#Using Subquery
+select e1.name from Employee e1 where e1.id in
+(select e2.managerId from Employee e2 group by e2.managerId having count(e2.id)>=5);
+# Using Inner Join
+select e2.name from Employee e1 Inner Join Employee e2 on e1.managerId = e2.id group by e1.managerId having count(e1.id)>=5;
